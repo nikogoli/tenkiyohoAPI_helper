@@ -11,6 +11,34 @@ const { data, copyright } = await Get_weather_forecast({
   only_main: false // true の場合、主要都市(≒県庁所在地) のデータのみ取得
 })
 ```
+あるいは
+```ts
+import {
+  BASE_URL,
+  COPYRIGHT,
+  PREFECTURES_CITIS_IDS,
+  Minify_data,
+  type RawAPIReturn,
+  type MinifiedAPIReturn
+} from "https://pax.deno.dev/nikogoli/tenkiyohoAPI_helper/mod.ts"
+
+const name = "神奈川県"
+const cities = PREFECTURES_CITIS_IDS[name]
+
+const data: Array<{city_name:string, result:MinifiedAPIReturn} | typeof COPYRIGHT> = [ COPYRIGHT ]
+
+await cities.reduce( (pre, {name, id}) => {
+  return pre.then( async () => {
+    await fetch(`${BASE_URL}?city=${id}`)
+    .then( res => res.json() )
+    .then( jdata => Minify_data(jdata as RawAPIReturn) )
+    .then( minified => data.push({city_name: name, result: minified}) )
+  })
+}, Promise.resolve() ) 
+
+console.log(data)
+```
+
 
 <details>
 <summary>結果</summary>
@@ -69,7 +97,7 @@ data = [
 ```
 </details>
 
-## Other functions
+## Functions
 ```ts
 // data.forecasts を today, tomorrow, dayAfterTomorrow に分解して flat 化する
 Convert_data: (data: RawAPIReturn) => BaseAPIReturn
@@ -85,6 +113,9 @@ Wrapped_fetch: (url: string) => Promise<ResultType<RawAPIReturn>>
 
 // 本体。 URL作成 → Wrapped_fetch → データ変換 → 引数で渡した list に結果を追加
 Fetch_data: (city_data: { name: string, id: string}, list: FetchedDataList, type: "arranged" | "original" | "minified") => Promise<void>
+
+// name が適切かどうか判定 → 都市データ取得 → list 作成 → 都市データごとに Fetch_data
+Get_weather_forecast: ({ name: string, data_type?: "arranged" | "original" | "minified", only_main?: boolean }) => Promise<{data: FetchedDataList, copyright: typeof COPYRIGHT}>
 ````
 
 ----
