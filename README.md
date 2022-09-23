@@ -39,8 +39,8 @@ data = [
       "chanceOfRain_afternoon":null,
       "image_title":"雨",
       "image_url":"https://www.jma.go.jp/bosai/forecast/img/300.svg"
-	},
-	"tomorrow":{
+    },
+    "tomorrow":{
       "year":2022, "month":9, "day":24,
       "dateLabel":"明日",
       "telop":"雨時々止む",
@@ -52,11 +52,11 @@ data = [
       "image_title":"雨時々止む",
       "image_url":"https://www.jma.go.jp/bosai/forecast/img/302.svg"
     },
-	"dayAfterTomorrow":{
+    "dayAfterTomorrow":{
       "year":2022, "month":9, "day":25,
       "dateLabel":"明後日",
       ...
-	}
+    }
   }},
   {"city_name":"小田原", "ok":true, "result":{
     ...
