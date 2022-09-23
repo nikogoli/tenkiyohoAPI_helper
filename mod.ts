@@ -15,7 +15,14 @@ import {
     PREFECTURES_CITIS_IDS,
 } from "./data.ts"
 
-import { Get_weather_forecast } from "./funcs.ts"
+import {
+    Convert_data,
+    Arrange_data,
+    Minify_data,
+    Wrapped_fetch,
+    Fetch_data,
+    Get_weather_forecast,
+} from "./funcs.ts"
 
 export type {
     ArrangedAPIReturn,
@@ -34,4 +41,11 @@ export {
     PREFECTURES_CITIS_IDS,
 }
 
-export { Get_weather_forecast }
+export {
+    Convert_data,
+    Arrange_data,
+    Minify_data,
+    Wrapped_fetch,
+    Fetch_data,
+    Get_weather_forecast
+}

@@ -22,7 +22,7 @@ function isProfecture(name: string): name is ProfectureNames {
 }
 
 
-function Convert_data(
+export function Convert_data(
     data: RawAPIReturn
 ): BaseAPIReturn{
     const {
@@ -42,7 +42,7 @@ function Convert_data(
 }
 
 
-function Arrange_data(
+export function Arrange_data(
     data: RawAPIReturn
 ): ArrangedAPIReturn{
     const { publicTimeFormatted,
@@ -91,7 +91,7 @@ function Arrange_data(
 }
 
 
-function Minify_data(
+export function Minify_data(
     data: RawAPIReturn
 ): MinifiedAPIReturn {
     const { title, link, location } = data
@@ -130,7 +130,7 @@ function Minify_data(
 }
 
 
-async function Wrapped_fetch(
+export async function Wrapped_fetch(
     url:string,
 ):Promise<ResultType<RawAPIReturn>> {
     return await fetch(url).then( res => res.json() )
@@ -139,7 +139,7 @@ async function Wrapped_fetch(
 }
 
 
-async function Fetch_data(
+export async function Fetch_data(
     city_data: { name: string, id: string },
     list: FetchedDataList,
     type: "arranged" | "original" | "minified",

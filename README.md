@@ -1,7 +1,7 @@
-# 天気予報 API（livedoor 天気互換）ヘルパー (typescript)
-fetch で 天気予報 API（livedoor 天気互換）からデータを取得するためのヘルパー
+# 天気予報 API（livedoor 天気互換）ヘルパー
+fetch で 天気予報 API（livedoor 天気互換）からデータを取得するためのヘルパー (typescript)
  
-## usage
+## Usage
 ```ts
 import { Get_weather_forecast } from "https://pax.deno.dev/nikogoli/tenkiyohoAPI_helper/mod.ts"
 
@@ -10,8 +10,12 @@ const { data, copyright } = await Get_weather_forecast({
   data_type: "minified", // "arranged" (default) | "minified" | "original"
   only_main: false // true の場合、主要都市(≒県庁所在地) のデータのみ取得
 })
+```
 
-/*
+<details>
+<summary>結果</summary>
+
+```ts
 data = [
   {"city_name":"横浜", "ok":true, "result":{
     "date":"2022年9月23日",
@@ -61,8 +65,29 @@ data = [
   {"city_name":"小田原", "ok":true, "result":{
     ...
   }}
-] */
+]
 ```
+</details>
+
+## Other functions
+```ts
+// data.forecasts を today, tomorrow, dayAfterTomorrow に分解して flat 化する
+Convert_data: (data: RawAPIReturn) => BaseAPIReturn
+
+// Convert_data() + 華氏気温の省略などデータを扱いやすいように少し調整する
+Arrange_data: (data: RawAPIReturn) => ArrangedAPIReturn
+
+// Convert_data() + 風向き・波高・深夜の降水確率など一部のデータを省略して簡素化する
+Minify_data: (data: RawAPIReturn) =>  MinifiedAPIReturn
+
+//fetch の wrapperで、fetch の結果に型を付けるだけ
+Wrapped_fetch: (url: string) => Promise<ResultType<RawAPIReturn>>
+
+// 本体。 URL作成 → Wrapped_fetch → データ変換 → 引数で渡した list に結果を追加
+Fetch_data: (city_data: { name: string, id: string}, list: FetchedDataList, type: "arranged" | "original" | "minified") => Promise<void>
+````
+
+----
 
 API から取得されたデータの権利は全て 天気予報 API（livedoor 天気互換）に帰属する
 
