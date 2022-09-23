@@ -267,12 +267,10 @@ export type FetchedDataList = Array<{
   city_name: string,
   ok: true,
   result: BaseAPIReturn|ArrangedAPIReturn|MinifiedAPIReturn,
-  copyright: typeof COPYRIGHT
 } | {
   city_name: string,
   ok: false,
   message: string,
-  copyright: typeof COPYRIGHT
 }>
 
 

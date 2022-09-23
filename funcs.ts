@@ -142,32 +142,33 @@ async function Wrapped_fetch(
 async function Fetch_data(
     city_data: { name: string, id: string },
     list: FetchedDataList,
-    type: "default" | "original" | "minified"
+    type: "arranged" | "original" | "minified",
 ):Promise<void> {
     const fetched = await Wrapped_fetch(`${BASE_URL}?city=${city_data.id}`)
     if (fetched.ok){
-        const data = (type == "default") ? Arrange_data(fetched.data)
+        const data = (type == "arranged") ? Arrange_data(fetched.data)
             : (type == "minified") ? Minify_data(fetched.data)
             : Convert_data(fetched.data)
-        list.push( {city_name: city_data.name, ok: true, result: data, copyright: COPYRIGHT } )
+        list.push( {city_name: city_data.name, ok: true, result: data } )
     } else {
-        list.push( {city_name: city_data.name, ...fetched, copyright: COPYRIGHT} )
+        list.push( {city_name: city_data.name, ...fetched} )
     }
 }
 
 
-export async function Get_weather_forecast(
+export async function Get_weather_forecast(props: {
     name: string,
-    result_type: "default" | "original" | "minified"  = "default",
-    only_main = false,
-): Promise<FetchedDataList>{
+    data_type?: "arranged" | "original" | "minified",
+    only_main?: boolean
+}): Promise<{data: FetchedDataList, copyright: typeof COPYRIGHT}>{
+    const { name, data_type, only_main } = props
     if (isProfecture(name)){
-        const cities = (only_main) ? [PREFECTURES_CITIS_IDS[name][0]] : [...PREFECTURES_CITIS_IDS[name]]
+        const cities = (only_main == true) ? [PREFECTURES_CITIS_IDS[name][0]] : [...PREFECTURES_CITIS_IDS[name]]
         const output:FetchedDataList = []
         await cities.reduce( (pre, dat) => {
-            return pre.then( async () => await Fetch_data(dat, output, result_type) )
+            return pre.then( async () => await Fetch_data(dat, output, data_type ?? "arranged") )
         }, Promise.resolve() )    
-        return output
+        return {data: output, copyright: COPYRIGHT}
     } else {
         throw new Error("invalid prefecture name")
     }
